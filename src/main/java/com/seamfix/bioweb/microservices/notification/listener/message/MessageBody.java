@@ -1,4 +1,4 @@
-package com.seamfix.bioweb.microservices.backup.listener.message;
+package com.seamfix.bioweb.microservices.notification.listener.message;
 
 import lombok.Getter;
 import lombok.Setter;

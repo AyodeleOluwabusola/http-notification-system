@@ -1,4 +1,4 @@
-package com.seamfix.bioweb.microservices.backup.payload;
+package com.seamfix.bioweb.microservices.notification.payload;
 
 import java.io.Serializable;
 

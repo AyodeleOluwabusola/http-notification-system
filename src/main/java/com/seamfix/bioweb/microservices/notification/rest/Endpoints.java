@@ -1,10 +1,10 @@
-package com.seamfix.bioweb.microservices.backup.rest;
+package com.seamfix.bioweb.microservices.notification.rest;
 
-import com.seamfix.bioweb.microservices.backup.listener.message.MessageBody;
-import com.seamfix.bioweb.microservices.backup.listener.utils.Producer;
-import com.seamfix.bioweb.microservices.backup.payload.PublishMessageResponse;
-import com.seamfix.bioweb.microservices.backup.payload.SubscribeRequest;
-import com.seamfix.bioweb.microservices.backup.payload.SubscribeResponse;
+import com.seamfix.bioweb.microservices.notification.listener.message.MessageBody;
+import com.seamfix.bioweb.microservices.notification.listener.jms.Producer;
+import com.seamfix.bioweb.microservices.notification.payload.PublishMessageResponse;
+import com.seamfix.bioweb.microservices.notification.payload.SubscribeRequest;
+import com.seamfix.bioweb.microservices.notification.payload.SubscribeResponse;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.security.PermitAll;

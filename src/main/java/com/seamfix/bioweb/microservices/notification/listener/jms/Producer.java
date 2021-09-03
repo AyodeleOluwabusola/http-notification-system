@@ -1,9 +1,9 @@
-package com.seamfix.bioweb.microservices.backup.listener.utils;
+package com.seamfix.bioweb.microservices.notification.listener.jms;
 
-import com.seamfix.bioweb.microservices.backup.listener.message.MessageBody;
-import com.seamfix.bioweb.microservices.backup.payload.PublishMessageResponse;
-import com.seamfix.bioweb.microservices.backup.payload.SubscribeRequest;
-import com.seamfix.bioweb.microservices.backup.payload.SubscribeResponse;
+import com.seamfix.bioweb.microservices.notification.listener.message.MessageBody;
+import com.seamfix.bioweb.microservices.notification.payload.PublishMessageResponse;
+import com.seamfix.bioweb.microservices.notification.payload.SubscribeRequest;
+import com.seamfix.bioweb.microservices.notification.payload.SubscribeResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.activemq.ActiveMQConnectionFactory;
 
