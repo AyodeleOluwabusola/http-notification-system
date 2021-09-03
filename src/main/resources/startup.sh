@@ -15,7 +15,7 @@ JBOSS_CONFIG=${2:-"$JBOSS_MODE.xml"}
 ls -al $JBOSS_HOME/bin
 
 # Deploy the WAR
-cp -vr /opt/jboss/wildfly/customization/payload-backup.jar $JBOSS_HOME/$JBOSS_MODE/deployments/payload-backup.jar
+cp -vr /opt/jboss/wildfly/customization/notification-sender.jar $JBOSS_HOME/$JBOSS_MODE/deployments/notification-sender.jar
 
 echo "=> Restarting WildFly"
 $JBOSS_HOME/bin/$JBOSS_MODE.sh -b 0.0.0.0 -c $JBOSS_CONFIG
