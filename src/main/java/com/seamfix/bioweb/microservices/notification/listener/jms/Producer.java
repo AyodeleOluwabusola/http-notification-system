@@ -7,6 +7,7 @@ import com.seamfix.bioweb.microservices.notification.payload.SubscribeResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.activemq.ActiveMQConnectionFactory;
 
+import javax.enterprise.event.Event;
 import javax.jms.Connection;
 import javax.jms.DeliveryMode;
 import javax.jms.Destination;
@@ -15,18 +16,19 @@ import javax.jms.MapMessage;
 import javax.jms.MessageProducer;
 import javax.jms.Session;
 
-
 @Slf4j
 public class Producer {
 
     private final String topic;
+    private Event<Notification> event;
     private SubscribeRequest request;
 
     // Create a ConnectionFactory
     private static final ActiveMQConnectionFactory connectionFactory = new ActiveMQConnectionFactory("admin", "admin", "tcp://localhost:61616");
 
-    public Producer(String topic){
+    public Producer(String topic, Event event){
         this.topic = topic;
+        this.event = event;
     }
 
     public Producer(SubscribeRequest request, String topic){
@@ -52,17 +54,19 @@ public class Producer {
             MessageProducer producer = session.createProducer(destination);
             producer.setDeliveryMode(DeliveryMode.PERSISTENT);
 
+            session.close();
+            connection.close();
 
             response.setUrl(request.getUrl());
             response.setTopic(topic);
         }catch (JMSException e) {
-            log.error("Error occurred while createing Subscription: ", e);
+            log.error("Error occurred while creating Subscription/Topic: ", e);
         }
 
         return response;
     }
 
-    public PublishMessageResponse sendMessageToSubscribers(MessageBody message){
+    public PublishMessageResponse sendMessageToConsumers(MessageBody message){
 
         PublishMessageResponse response = new PublishMessageResponse();
         response.setCode(-1);
@@ -82,28 +86,37 @@ public class Producer {
             MessageProducer producer = session.createProducer(destination);
             producer.setDeliveryMode(DeliveryMode.PERSISTENT);
 
-            // Create a messages
+            // Create message
             MapMessage mapMessage = session.createMapMessage();
+            mapMessage.setString("topic", topic);
             mapMessage.setString("data", message.getMsg());
 
             // Tell the producer to send the message
             producer.send(mapMessage);
+            event.fire(push(topic, message.getMsg())); //Consumer listens for this event/notification
 
             // Clean up
             session.close();
             connection.close();
 
             response.setCode(0);
-            response.setDescription("Success");
+            response.setDescription("Message successfully published!");
             response.setTopic(topic);
             MessageBody messageResponse = new MessageBody();
             messageResponse.setMsg(message.getMsg());
             response.setData(messageResponse);
-        }
-        catch (JMSException e) {
+        }catch (JMSException e) {
             log.error("Error occurred while sending Message/Notification : ", e);
         }
         return response;
+    }
+
+    @SuppressWarnings("PMD.UseObjectForClearerAPI")
+    public Notification push(String topic, String data) {
+        Notification notification = new Notification();
+        notification.setData(data);
+        notification.setTopic(topic);
+        return notification;
     }
 
 }
